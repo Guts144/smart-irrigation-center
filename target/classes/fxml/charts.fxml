@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.smartirrigation.controller.ChartsController">
+    <top>
+        <VBox alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="20" right="20" bottom="10" left="20"/>
+            </padding>
+            <Label text="📊 Sensor Analytics" styleClass="header-label"/>
+            <Label text="Real-time performance metrics" styleClass="sub-header-label"/>
+        </VBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <VBox spacing="20">
+                <padding>
+                    <Insets top="10" right="20" bottom="20" left="20"/>
+                </padding>
+                
+                <LineChart fx:id="tempChart" title="🌡️ Temperature History" prefHeight="300" minHeight="250" styleClass="chart">
+                    <xAxis>
+                        <CategoryAxis label="Timeline"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="Degrees (°C)"/>
+                    </yAxis>
+                </LineChart>
+                
+                <LineChart fx:id="humidityChart" title="💧 Humidity History" prefHeight="300" minHeight="250" styleClass="chart">
+                    <xAxis>
+                        <CategoryAxis label="Timeline"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="Percentage (%)"/>
+                    </yAxis>
+                </LineChart>
+                
+                <LineChart fx:id="soilChart" title="🌱 Soil Moisture History" prefHeight="300" minHeight="250" styleClass="chart">
+                    <xAxis>
+                        <CategoryAxis label="Timeline"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="Percentage (%)"/>
+                    </yAxis>
+                </LineChart>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

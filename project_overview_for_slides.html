@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f9f4;
+            color: #333;
+            padding: 50px;
+        }
+
+        .slide {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left: 10px solid #4CAF50;
+            page-break-after: always;
+        }
+
+        h1 {
+            color: #2E7D32;
+            border-bottom: 2px solid #e8f5e9;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #43A047;
+        }
+
+        ul {
+            line-height: 1.8;
+            font-size: 1.2em;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.8em;
+            color: #999;
+            text-align: right;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: bold;
+            color: #2E7D32;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="slide">
+        <div class="header">
+            <div class="logo">🌿 SmartIrrigation IoT</div>
+            <div>Slide 1</div>
+        </div>
+        <center style="margin-top: 100px;">
+            <h1>Intelligent IoT Irrigation & Monitoring System</h1>
+            <p style="font-size: 1.5em;">Precision Agriculture via Real-time Telemetry</p>
+            <hr style="width: 50%; border: 1px solid #4CAF50;">
+            <p><strong>Faculty of Engineering</strong></p>
+            <p>Presented by: [Names of 2 Persons]</p>
+        </center>
+    </div>
+
+    <div class="slide">
+        <h1>2. Problem Statement</h1>
+        <ul>
+            <li>Global Water Crisis: Agriculture consumes 70% of freshwater.</li>
+            <li>Inefficient traditional irrigation leads to massive water waste.</li>
+            <li>Lack of real-time monitoring for soil and climate variance.</li>
+            <li>Emergency Situations: No automated response to fire or extreme drought.</li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>3. System Architecture</h1>
+        <h2>Holistic Integration</h2>
+        <ul>
+            <li><strong>Edge Node:</strong> ESP32 + DHT22 + Soil Sensors (Wokwi Simulation).</li>
+            <li><strong>Transmission:</strong> Lightweight MQTT Protocol via HiveMQ.</li>
+            <li><strong>Persistence:</strong> SQLite Database for historical auditing.</li>
+            <li><strong>Client:</strong> JavaFX Desktop Dashboard with Role-Based Access.</li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>4. Hardware Implementation</h1>
+        <h2>The IoT Edge Node</h2>
+        <ul>
+            <li>ESP32 Microcontroller: Low-power, integrated Wi-Fi.</li>
+            <li>Sensors: Humidity/Temperature (DHT22) & Analog Soil Moisture.</li>
+            <li>Control: GPIO-driven Relay for Irrigation Valve (Simulated via LED).</li>
+            <li>Auto-Reconnect Logic: Ensures data continuity in case of network drops.</li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>5. Data Flow & Communication</h1>
+        <ul>
+            <li><strong>Upstream:</strong> Sensors &rarr; ESP32 &rarr; JSON Serialization &rarr; MQTT Publish.</li>
+            <li><strong>Downstream:</strong> MQTT Subscribe &rarr; Desktop Client &rarr; GSON Parsing &rarr; SQLite
+                Persist.</li>
+            <li><strong>Control:</strong> Dashboard Command &rarr; MQTT Publish &rarr; ESP32 Subscribe &rarr; GPIO
+                Toggle.</li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>6. Security & Role-Based Access</h1>
+        <ul>
+            <li><strong>Authentication:</strong> Encrypted local credential validation.</li>
+            <li><strong>Admin Role:</strong> Access to MQTT Cloud settings, Broker configuration, and Bulk Exports.</li>
+            <li><strong>Operator Role:</strong> View real-time telemetry and manual valve control.</li>
+            <li><strong>UI Logic:</strong> Dynamic navigation hiding for unauthorized users.</li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>7. Software Design: JavaFX & FXML</h1>
+        <ul>
+            <li><strong>View:</strong> XML-based FXML for declarative UI structure.</li>
+            <li><strong>Controller:</strong> Java logic handling UI events and MQTT background tasks.</li>
+            <li><strong>Service Layer:</strong> Singleton MqttService for application-wide connectivity.</li>
+            <li><strong>DAO Layer:</strong> Dedicated Data Access Objects for SQL interactions.</li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>8. Automated Safety Systems</h1>
+        <ul>
+            <li><strong>Visuals:</strong> Lush gradients and Glassmorphism effects.</li>
+            <li><strong>Responsive:</strong> Real-time gauges and vertically stacked line charts.</li>
+            <li><strong>Analytics:</strong> Detailed historical view with CSV Export support.</li>
+            <li><strong>Security:</strong> Admin vs. Operator roles for system integrity.</li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>8. Conclusion & Results</h1>
+        <ul>
+            <li>Successfully automated irrigation based on environmental triggers.</li>
+            <li>Optimized database performance with efficient indexing.</li>
+            <li>Created a professional, high-fidelity UI for user engagement.</li>
+            <li>Future Scope: AI/ML predictive models for climate forecasting.</li>
+        </ul>
+        <center style="margin-top: 50px;">
+            <h2>Thank You! Any Questions?</h2>
+        </center>
+    </div>
+
+</body>
+
+</html>

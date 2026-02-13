@@ -1,0 +1,152 @@
+' ==========================================
+' 1. CLASS DIAGRAM: Software Architecture
+' ==========================================
+@startuml Class_Diagram
+skinparam ClassAttributeIconSize 0
+
+package "com.smartirrigation" {
+    class MainApp {
+        +start(Stage stage)
+        +main(String[] args)
+    }
+
+    package "controller" {
+        class DashboardController {
+            -MqttService mqttService
+            +handleHome()
+            +handleCharts()
+            +handleSettings()
+        }
+        class HomeViewController {
+            -Label tempLabel
+            -Label humidityLabel
+            -Label soilLabel
+            -Button valveButton
+            +handleToggleValve()
+            -checkThresholdsAndAutomate(SensorData)
+        }
+        class SettingsController {
+            +handleSave()
+            +handleExport()
+        }
+    }
+
+    package "service" {
+        class MqttService <<Singleton>> {
+            -Mqtt3AsyncClient client
+            +getInstance(): MqttService
+            +connect()
+            +publishValveCommand(String cmd)
+        }
+    }
+
+    package "dao" {
+        class SensorDataDAO {
+            +insertReading(float t, float h, float s)
+            +getRecentData(): List<SensorData>
+        }
+        class ValveActionDAO {
+            +logAction(String action)
+        }
+    }
+}
+
+DashboardController o-- MqttService
+HomeViewController o-- MqttService
+MqttService --> SensorDataDAO
+MqttService --> ValveActionDAO
+@enduml
+
+' ==========================================
+' 2. SEQUENCE DIAGRAM: E2E Data Flow
+' ==========================================
+@startuml Sequence_Diagram
+participant "ESP32 (Wokwi)" as IoT
+participant "HiveMQ Broker" as Broker
+participant "MqttService" as SVC
+participant "HomeView" as UI
+database "SQLite DB" as DB
+
+IoT -> Broker : Publish Sensor Data (JSON)
+Broker -> SVC : On Message Received
+SVC -> DB : Save Reading (DAO)
+SVC -> UI : Update UI Labels (Platform.runLater)
+UI -> UI : checkThresholds()
+
+alt Temperature > 60°C (Fire Alarm)
+    UI -> UI : Show Alert Popup
+    UI -> SVC : publishCommand("VALVE_ON")
+    SVC -> Broker : Command: VALVE_ON
+    Broker -> IoT : Receive Command
+    IoT -> IoT : Open Physical Valve
+end
+@enduml
+
+' ==========================================
+' 3. DATABASE ERD
+' = : Visualizing SQLite Tables
+' ==========================================
+@startuml ER_Diagram
+entity "users" {
+    * id : INTEGER <<PK>>
+    --
+    * username : TEXT
+    * password : TEXT
+    * role : TEXT
+}
+
+entity "sensor_data" {
+    * id : INTEGER <<PK>>
+    --
+    * temperature : REAL
+    * humidity : REAL
+    * soil_moisture : REAL
+    * timestamp : DATETIME
+}
+
+entity "valve_history" {
+    * id : INTEGER <<PK>>
+    --
+    * action : TEXT
+    * timestamp : DATETIME
+}
+@enduml
+
+' ==========================================
+' 4. USE CASE DIAGRAM
+' ==========================================
+@startuml Use_Case_Diagram
+left to right direction
+actor "User" as U
+actor "Administrator" as A
+
+rectangle "Smart Irrigation System" {
+    usecase "View Real-time Sensors" as UC1
+    usecase "Manual Valve Control" as UC2
+    usecase "Analyze History Charts" as UC3
+    usecase "Modify Broker Settings" as UC4
+    usecase "Export Data to CSV" as UC5
+}
+
+U --> UC1
+U --> UC2
+U --> UC3
+
+A --|> U
+A --> UC4
+A --> UC5
+@enduml
+
+' ==========================================
+' 5. STATE DIAGRAM: Valve Logic
+' ==========================================
+@startuml State_Diagram
+[*] --> ValveClosed
+
+ValveClosed --> ValveOpen : Temp > 60°C\n(Fire Trigger)
+ValveClosed --> ValveOpen : Humidity < 30%\n(Drought Trigger)
+ValveClosed --> ValveOpen : Manual Click
+
+ValveOpen --> ValveClosed : Manual Click
+ValveOpen --> ValveClosed : System Reset
+@enduml

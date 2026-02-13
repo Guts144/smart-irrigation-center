@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.smartirrigation.controller.SettingsController" alignment="CENTER" spacing="20">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="⚙️ MQTT Broker Settings" styleClass="header-label"/>
+    
+    <VBox spacing="15" maxWidth="450" styleClass="card">
+        <Label text="🌐 Broker Host" styleClass="sub-header-label"/>
+        <TextField fx:id="hostField" promptText="Enter broker host..."/>
+        
+        <Label text="🔌 Port" styleClass="sub-header-label"/>
+        <TextField fx:id="portField" promptText="8883"/>
+        
+        <Label text="👤 Username" styleClass="sub-header-label"/>
+        <TextField fx:id="usernameField" promptText="Enter account username..."/>
+        
+        <Label text="🔑 Password" styleClass="sub-header-label"/>
+        <PasswordField fx:id="passwordField" promptText="Enter account password..."/>
+        
+        <Separator/>
+        
+        <VBox spacing="10" alignment="CENTER">
+            <Button text="💾 Save &amp; Reconnect" onAction="#handleSave" maxWidth="Infinity"/>
+            <Button text="📤 Export History (CSV)" onAction="#handleExport" styleClass="button-secondary" maxWidth="Infinity"/>
+        </VBox>
+        <Label fx:id="statusLabel" alignment="CENTER"/>
+    </VBox>
+    
+
+
+</VBox>

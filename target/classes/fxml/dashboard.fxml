@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.smartirrigation.controller.DashboardController" prefHeight="600" prefWidth="900">
+    
+    <!-- Sidebar -->
+    <left>
+        <VBox spacing="10" styleClass="sidebar">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="🌿 Smart Irrigation" styleClass="sidebar-title"/>
+            <Separator/>
+            
+            <Button text="🏠 Home" onAction="#handleHome" styleClass="sidebar-button" maxWidth="Infinity"/>
+            <Button text="📊 Charts" onAction="#handleCharts" styleClass="sidebar-button" maxWidth="Infinity"/>
+            <Button text="⚙️  Settings" onAction="#handleSettings" styleClass="sidebar-button" maxWidth="Infinity"/>
+            
+            <Region VBox.vgrow="ALWAYS"/>
+            <Label fx:id="connectionStatus" text="Connecting..."/>
+            <Label fx:id="userLabel" style="-fx-text-fill: #ccc;"/>
+            <Button text="Logout" onAction="#handleLogout" styleClass="button-danger" maxWidth="Infinity"/>
+        </VBox>
+    </left>
+
+    <!-- Main Content Area -->
+    <center>
+        <StackPane fx:id="contentArea" style="-fx-background-color: #f4f9f4;"/>
+    </center>
+
+</BorderPane>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.smartirrigation.controller.HomeViewController" hgap="30" vgap="30" alignment="CENTER">
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30"/>
+    </padding>
+    
+    <!-- Temperature Card -->
+    <VBox styleClass="card" alignment="CENTER" minWidth="220" minHeight="180" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Label text="🌡️ Temperature" styleClass="sub-header-label"/>
+        <Label fx:id="tempLabel" text="--" styleClass="sensor-value"/>
+        <Label text="°C" styleClass="sensor-unit"/>
+    </VBox>
+
+    <!-- Humidity Card -->
+    <VBox styleClass="card" alignment="CENTER" minWidth="220" minHeight="180" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <Label text="💧 Humidity" styleClass="sub-header-label"/>
+        <Label fx:id="humidityLabel" text="--" styleClass="sensor-value"/>
+        <Label text="\%" styleClass="sensor-unit"/>
+    </VBox>
+
+    <!-- Soil Moisture Card -->
+    <VBox styleClass="card" alignment="CENTER" minWidth="220" minHeight="180" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <Label text="🌱 Soil Moisture" styleClass="sub-header-label"/>
+        <Label fx:id="soilLabel" text="--" styleClass="sensor-value"/>
+        <Label text="\%" styleClass="sensor-unit"/>
+    </VBox>
+
+    <!-- Valve Control Card -->
+    <VBox styleClass="card" alignment="CENTER" minWidth="220" minHeight="180" spacing="15" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Label text="💦 Valve Control" styleClass="sub-header-label"/>
+        <VBox fx:id="valveIndicator" minWidth="60" minHeight="60" maxWidth="60" maxHeight="60" style="-fx-background-color: #e0e0e0; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 2);"/>
+        <Button fx:id="valveButton" text="Toggle Valve" onAction="#handleToggleValve"/>
+    </VBox>
+</GridPane>
