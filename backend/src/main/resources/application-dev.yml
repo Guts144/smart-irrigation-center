@@ -1,0 +1,30 @@
+# Local development without Docker/PostgreSQL — uses embedded H2 file database
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:h2:file:./data/aquasense;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+# MQTT broker (same as desktop JavaFX app)
+aquasense:
+  mqtt:
+    host: 003405b159a641e2bed741f8db2e0344.s1.eu.hivemq.cloud
+    port: 8883
+
+logging:
+  level:
+    org.springframework.mail: DEBUG

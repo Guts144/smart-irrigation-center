@@ -2,12 +2,12 @@ com/smartirrigation/controller/HomeViewController.class
 com/smartirrigation/model/ValveAction.class
 com/smartirrigation/controller/LoginController.class
 com/smartirrigation/controller/ChartsController.class
-com/smartirrigation/service/MqttService.class
 com/smartirrigation/db/DatabaseManager.class
+com/smartirrigation/service/MqttService.class
 com/smartirrigation/dao/UserDAO.class
 com/smartirrigation/controller/DashboardController.class
-com/smartirrigation/dao/SensorDataDAO.class
 com/smartirrigation/util/CsvExporter.class
+com/smartirrigation/dao/SensorDataDAO.class
 com/smartirrigation/controller/SettingsController.class
 com/smartirrigation/model/User.class
 com/smartirrigation/dao/ValveActionDAO.class

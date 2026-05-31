@@ -1,0 +1,117 @@
+@use './styles/theme' as theme;
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: theme.$font-family;
+  @include theme.gradient-bg;
+  color: theme.$color-primary-darker;
+}
+
+a {
+  color: theme.$color-primary;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.btn-primary {
+  @include theme.btn-primary;
+}
+
+.btn-secondary {
+  @include theme.btn-primary;
+  background: linear-gradient(to bottom right, theme.$color-secondary 0%, #1976D2 100%);
+  box-shadow: 0 3px 8px rgba(33, 150, 243, 0.4);
+}
+
+.btn-danger {
+  @include theme.btn-primary;
+  background: linear-gradient(to bottom right, #ef5350 0%, theme.$color-danger 100%);
+  box-shadow: 0 3px 8px rgba(229, 57, 53, 0.4);
+}
+
+.btn-link {
+  background: transparent;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  padding: 0.25rem;
+
+  &:hover {
+    color: theme.$color-primary;
+    text-decoration: underline;
+  }
+}
+
+.card {
+  @include theme.card;
+}
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.header-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  background: linear-gradient(to right, theme.$color-primary-dark, theme.$color-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.status-online {
+  color: theme.$color-primary;
+  font-weight: 700;
+}
+
+.status-offline {
+  color: theme.$color-danger;
+  font-weight: 700;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+
+  label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: theme.$color-text-muted;
+  }
+
+  input, textarea {
+    padding: 12px;
+    border: 2px solid theme.$color-border;
+    border-radius: theme.$radius-sm;
+    font-size: 0.95rem;
+    background: theme.$color-white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    &:focus {
+      outline: none;
+      border-color: theme.$color-primary-light;
+      box-shadow: 0 0 8px rgba(102, 187, 106, 0.3);
+    }
+  }
+}
+
+.error-banner {
+  background: #ffebee;
+  color: theme.$color-danger;
+  padding: 0.75rem 1rem;
+  border-radius: theme.$radius-sm;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,54 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: aquasense-backend
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:aquasense}
+    username: ${DB_USER:aquasense}
+    password: ${DB_PASSWORD:aquasense}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+aquasense:
+  jwt:
+    secret: ${JWT_SECRET:change-me-in-production-use-at-least-256-bits-secret-key-here}
+    access-token-expiration-ms: 900000
+    refresh-token-expiration-ms: 604800000
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:4200}
+  mqtt:
+    host: ${MQTT_HOST:003405b159a641e2bed741f8db2e0344.s1.eu.hivemq.cloud}
+    port: ${MQTT_PORT:8883}
+    username: ${MQTT_USERNAME:mgharsal}
+    password: ${MQTT_PASSWORD:Anzb123.}
+    telemetry-topic: irrigation/device/esp32_01/telemetry
+    command-topic: irrigation/device/esp32_01/command
+  stripe:
+    api-key: ${STRIPE_API_KEY:sk_test_placeholder}
+    webhook-secret: ${STRIPE_WEBHOOK_SECRET:whsec_placeholder}
+    pro-price-id: ${STRIPE_PRO_PRICE_ID:price_placeholder}
+    success-url: ${STRIPE_SUCCESS_URL:http://localhost:4200/checkout/success?session_id={CHECKOUT_SESSION_ID}}
+    cancel-url: ${STRIPE_CANCEL_URL:http://localhost:4200/pricing?checkout=cancelled}
+  mail:
+    enabled: ${MAIL_ENABLED:false}
+    to: ${MAIL_TO:mohamed.gharsalli@etudiant-ipeiem.utm.tn}
+    from: ${MAIL_FROM:mohamed.gharsalli@etudiant-ipeiem.utm.tn}
+    subject-prefix: ${MAIL_SUBJECT_PREFIX:[AquaSense Contact]}
