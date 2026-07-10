@@ -17,9 +17,15 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'charts',
+    path: 'pro',
     canActivate: [authGuard, proGuard],
     loadComponent: () => import('./layout/pro-layout.component').then(m => m.ProLayoutComponent),
+    children: [
+      { path: 'charts', loadComponent: () => import('./pages/charts/charts.component').then(m => m.ChartsComponent) },
+      { path: 'tracking', loadComponent: () => import('./pages/tracking/tracking.component').then(m => m.TrackingComponent) },
+      { path: '', redirectTo: 'charts', pathMatch: 'full' }
+    ]
   },
-  { path: '**', redirectTo: '' },
+  { path: 'charts', redirectTo: '/pro/charts' },
+  { path: '**', redirectTo: '' }
 ];

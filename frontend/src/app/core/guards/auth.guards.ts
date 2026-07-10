@@ -45,7 +45,7 @@ export const guestGuard: CanActivateFn = () => {
   return auth.restoreSession().pipe(
     map(user => {
       if (user) {
-        router.navigate([user.pro || user.role === 'ADMIN' ? '/charts' : '/']);
+        router.navigate([user.pro || user.role === 'ADMIN' ? '/pro/charts' : '/']);
         return false;
       }
       return true;

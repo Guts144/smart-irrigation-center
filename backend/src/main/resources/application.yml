@@ -7,8 +7,8 @@ spring:
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
     port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME:}
-    password: ${MAIL_PASSWORD:}
+    username: ${MAIL_USERNAME:mgharsalli1999@gmail.com}
+    password: ${MAIL_PASSWORD:lyfdgpeorxxhfrjj}
     properties:
       mail:
         smtp:
@@ -42,13 +42,13 @@ aquasense:
     telemetry-topic: irrigation/device/esp32_01/telemetry
     command-topic: irrigation/device/esp32_01/command
   stripe:
-    api-key: ${STRIPE_API_KEY:sk_test_placeholder}
+    api-key: ${STRIPE_API_KEY:sk_test_51Td8PcFHPdugfg5yYiEKkWSDUpvvdzsqKcGLuxJxXRPkl8rIxBN1NmDOpwbT4C4F4605xuBKI9R3GGbI1SZkaPrw00RypAx8cO}
     webhook-secret: ${STRIPE_WEBHOOK_SECRET:whsec_placeholder}
-    pro-price-id: ${STRIPE_PRO_PRICE_ID:price_placeholder}
+    pro-price-id: ${STRIPE_PRO_PRICE_ID:price_1Td8VzFHPdugfg5yptqkKWbO}
     success-url: ${STRIPE_SUCCESS_URL:http://localhost:4200/checkout/success?session_id={CHECKOUT_SESSION_ID}}
     cancel-url: ${STRIPE_CANCEL_URL:http://localhost:4200/pricing?checkout=cancelled}
   mail:
-    enabled: ${MAIL_ENABLED:false}
+    enabled: ${MAIL_ENABLED:true}
     to: ${MAIL_TO:mohamed.gharsalli@etudiant-ipeiem.utm.tn}
     from: ${MAIL_FROM:mohamed.gharsalli@etudiant-ipeiem.utm.tn}
     subject-prefix: ${MAIL_SUBJECT_PREFIX:[AquaSense Contact]}

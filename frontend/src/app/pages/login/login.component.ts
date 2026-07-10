@@ -54,7 +54,7 @@ export class LoginComponent {
     this.error = '';
     this.auth.login(this.form.getRawValue() as { email: string; password: string }).subscribe({
       next: user => {
-        this.router.navigate([user.pro || user.role === 'ADMIN' ? '/charts' : '/']);
+        this.router.navigate([user.pro || user.role === 'ADMIN' ? '/pro/charts' : '/']);
       },
       error: err => {
         this.error = err.error?.detail || 'Invalid credentials';

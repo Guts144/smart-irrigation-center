@@ -43,6 +43,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/public/**").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/api/stripe/webhook").permitAll()
+                        .requestMatchers("/api/tracking/location").permitAll()
+                        .requestMatchers("/api/tracking/*/arrived").permitAll()
                         .requestMatchers("/api/pro/**").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

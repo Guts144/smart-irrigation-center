@@ -1,14 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
 import { AuthService } from '../core/services/auth.service';
 import { ApiService } from '../core/services/api.service';
-import { ChartsComponent } from '../pages/charts/charts.component';
 
 @Component({
   selector: 'app-pro-layout',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, ChartsComponent],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet],
   template: `
     <div class="shell">
       <aside class="sidebar">
@@ -16,7 +15,8 @@ import { ChartsComponent } from '../pages/charts/charts.component';
         <hr class="separator" />
 
         <a routerLink="/" class="sidebar-link">🏠 Home</a>
-        <a routerLink="/charts" routerLinkActive="active" class="sidebar-link">📊 Charts</a>
+        <a routerLink="/pro/charts" routerLinkActive="active" class="sidebar-link">📊 Charts</a>
+        <a routerLink="/pro/tracking" routerLinkActive="active" class="sidebar-link">📍 Track Our Team</a>
 
         <div class="spacer"></div>
 
@@ -30,7 +30,7 @@ import { ChartsComponent } from '../pages/charts/charts.component';
       </aside>
 
       <main class="content">
-        <app-charts />
+        <router-outlet />
       </main>
     </div>
   `,
@@ -124,7 +124,7 @@ export class ProLayoutComponent implements OnInit, OnDestroy {
   mqttConnected = false;
   private pollSub?: Subscription;
 
-  constructor(public auth: AuthService, private api: ApiService) {}
+  constructor(public auth: AuthService, private api: ApiService) { }
 
   ngOnInit(): void {
     this.auth.restoreSession().subscribe(() => this.refreshConnection());

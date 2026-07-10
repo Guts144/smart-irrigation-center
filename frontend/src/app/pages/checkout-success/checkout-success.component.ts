@@ -43,7 +43,7 @@ export class CheckoutSuccessComponent implements OnInit {
     this.api.completeCheckout(sessionId).subscribe({
       next: user => {
         this.auth.user.set(user);
-        this.router.navigate(['/charts']);
+        this.router.navigate(['/pro/charts']);
       },
       error: err => {
         this.error = err.error?.detail || 'Could not verify payment. Contact support if you were charged.';
