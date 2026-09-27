@@ -1,6 +1,8 @@
 package com.aquasense.controller;
 
+import com.aquasense.dto.AuthTokensResponse;
 import com.aquasense.dto.LoginRequest;
+import com.aquasense.dto.RefreshTokenRequest;
 import com.aquasense.dto.RegisterRequest;
 import com.aquasense.dto.UserResponse;
 import com.aquasense.security.CookieNames;
@@ -37,6 +39,16 @@ public class AuthController {
                 .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
                         org.springframework.http.HttpStatus.UNAUTHORIZED, "No refresh token"));
         return authService.refresh(response, refreshToken);
+    }
+
+    @PostMapping("/mobile/login")
+    public AuthTokensResponse mobileLogin(@Valid @RequestBody LoginRequest request) {
+        return authService.mobileLogin(request);
+    }
+
+    @PostMapping("/mobile/refresh")
+    public AuthTokensResponse mobileRefresh(@Valid @RequestBody RefreshTokenRequest request) {
+        return authService.mobileRefresh(request.refreshToken());
     }
 
     @PostMapping("/logout")

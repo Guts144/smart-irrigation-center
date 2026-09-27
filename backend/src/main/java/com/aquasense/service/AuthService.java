@@ -1,5 +1,6 @@
 package com.aquasense.service;
 
+import com.aquasense.dto.AuthTokensResponse;
 import com.aquasense.dto.LoginRequest;
 import com.aquasense.dto.RegisterRequest;
 import com.aquasense.dto.UserResponse;
@@ -44,29 +45,54 @@ public class AuthService {
     }
 
     public UserResponse login(LoginRequest request, HttpServletResponse response) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.email().toLowerCase(), request.password()));
-        User user = userRepository.findByEmail(request.email().toLowerCase())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+        User user = authenticate(request);
         setTokenCookies(response, user);
         return toResponse(user);
     }
 
     public UserResponse refresh(HttpServletResponse response, String refreshToken) {
+        User user = userFromRefreshToken(refreshToken);
+        setTokenCookies(response, user);
+        return toResponse(user);
+    }
+
+    /** Mobile login: tokens are returned in the body instead of cookies. */
+    public AuthTokensResponse mobileLogin(LoginRequest request) {
+        return issueTokens(authenticate(request));
+    }
+
+    public AuthTokensResponse mobileRefresh(String refreshToken) {
+        return issueTokens(userFromRefreshToken(refreshToken));
+    }
+
+    private User authenticate(LoginRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.email().toLowerCase(), request.password()));
+        return userRepository.findByEmail(request.email().toLowerCase())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+    }
+
+    private User userFromRefreshToken(String refreshToken) {
         try {
             var claims = jwtService.parseClaims(refreshToken);
             if (!jwtService.isRefreshToken(claims)) {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid refresh token");
             }
-            User user = userRepository.findByEmail(claims.getSubject())
+            return userRepository.findByEmail(claims.getSubject())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
-            setTokenCookies(response, user);
-            return toResponse(user);
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid refresh token");
         }
+    }
+
+    private AuthTokensResponse issueTokens(User user) {
+        return new AuthTokensResponse(
+                toResponse(user),
+                jwtService.generateAccessToken(user.getEmail(), user.getRole().name()),
+                jwtService.generateRefreshToken(user.getEmail(), user.getRole().name()),
+                jwtService.accessTokenMaxAgeSeconds());
     }
 
     public void logout(HttpServletResponse response) {
