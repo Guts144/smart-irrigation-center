@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/network/api_exception.dart';
 import '../../core/theme/app_theme.dart';
 import '../auth/application/auth_controller.dart';
 import '../auth/data/user.dart';
 
-/// Temporary landing screen after sign-in. The Pro tabs (dashboard, charts,
-/// valve, tracking) replace this in the next phases of MOBILE_APP_TASKS.md.
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
@@ -44,7 +43,7 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AquaSense'),
+        title: const Text('Account & Settings'),
         actions: [
           IconButton(
             tooltip: 'Sign out',
@@ -69,6 +68,25 @@ class HomeScreen extends ConsumerWidget {
             _AccountCard(user: user),
             const SizedBox(height: 16),
             _PlanCard(user: user),
+            if (user.role == 'ADMIN') ...[
+              const SizedBox(height: 16),
+              Card(
+                color: AppColors.surface,
+                child: ListTile(
+                  leading: const Icon(Icons.build_circle, color: AppColors.primaryDark),
+                  title: const Text('Technician GPS Mode'),
+                  subtitle: const Text('Start tracking sessions and transmit GPS updates'),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () => context.push('/technician'),
+                ),
+              ),
+            ],
+            const SizedBox(height: 16),
+            OutlinedButton.icon(
+              onPressed: () => context.push('/contact'),
+              icon: const Icon(Icons.support_agent),
+              label: const Text('Contact Support'),
+            ),
           ],
         ),
       ),
@@ -106,34 +124,49 @@ class _PlanCard extends StatelessWidget {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Row(
+        child: Column(
           children: [
-            Icon(
-              pro ? Icons.workspace_premium : Icons.lock_outline,
-              color: pro ? AppColors.primary : AppColors.textMuted,
-              size: 40,
+            Row(
+              children: [
+                Icon(
+                  pro ? Icons.workspace_premium : Icons.lock_outline,
+                  color: pro ? AppColors.primary : AppColors.textMuted,
+                  size: 40,
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        pro ? 'Pro access active' : 'Free plan',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        pro
+                            ? 'Live sensors, charts, valve control and tracking are unlocked.'
+                            : 'Upgrade to Pro to unlock live sensor data and valve control.',
+                        style: const TextStyle(color: AppColors.textMuted),
+                      ),
+                      const SizedBox(height: 8),
+                      Chip(label: Text('Status: ${user.subscriptionStatus}')),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    pro ? 'Pro access active' : 'Free plan',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    pro
-                        ? 'Live sensors, charts, valve control and tracking are unlocked.'
-                        : 'Upgrade to Pro to unlock live sensor data and valve control.',
-                    style: const TextStyle(color: AppColors.textMuted),
-                  ),
-                  const SizedBox(height: 8),
-                  Chip(label: Text('Subscription: ${user.subscriptionStatus}')),
-                ],
+            if (!pro) ...[
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.icon(
+                  onPressed: () => context.push('/pricing'),
+                  icon: const Icon(Icons.star),
+                  label: const Text('Upgrade to Pro'),
+                ),
               ),
-            ),
+            ],
           ],
         ),
       ),

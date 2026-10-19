@@ -34,12 +34,24 @@ public class StripeService {
     }
 
     public String createCheckoutSession(User user) {
+        return createCheckoutSession(user, null);
+    }
+
+    public String createCheckoutSession(User user, String platform) {
         assertConfigured();
+        boolean isMobile = "mobile".equalsIgnoreCase(platform);
+        String successUrl = isMobile
+                ? "aquasense://checkout/success?session_id={CHECKOUT_SESSION_ID}"
+                : properties.stripe().successUrl();
+        String cancelUrl = isMobile
+                ? "aquasense://pricing?checkout=cancelled"
+                : properties.stripe().cancelUrl();
+
         try {
             SessionCreateParams params = SessionCreateParams.builder()
                     .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
-                    .setSuccessUrl(properties.stripe().successUrl())
-                    .setCancelUrl(properties.stripe().cancelUrl())
+                    .setSuccessUrl(successUrl)
+                    .setCancelUrl(cancelUrl)
                     .setCustomerEmail(user.getEmail())
                     .addLineItem(SessionCreateParams.LineItem.builder()
                             .setPrice(properties.stripe().proPriceId())

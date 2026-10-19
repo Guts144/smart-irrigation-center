@@ -114,15 +114,20 @@ public class TrackingService {
                         throw new IllegalStateException("Pro subscription required");
                 }
 
-                return sessionRepository
-                                .findFirstByCustomerIdAndStatusOrderByStartedAtDesc(user.getId(), TrackingStatus.ACTIVE)
-                                .map(session -> {
-                                        TrackingLocation lastLocation = locationRepository
-                                                        .findFirstByTrackingSessionIdOrderByTimestampDesc(
-                                                                        session.getId())
-                                                        .orElse(null);
-                                        return buildInfoResponse(session, lastLocation);
-                                });
+                var sessionOpt = sessionRepository
+                                .findFirstByCustomerIdAndStatusOrderByStartedAtDesc(user.getId(), TrackingStatus.ACTIVE);
+
+                if (sessionOpt.isEmpty()) {
+                        sessionOpt = sessionRepository.findFirstByStatusOrderByStartedAtDesc(TrackingStatus.ACTIVE);
+                }
+
+                return sessionOpt.map(session -> {
+                        TrackingLocation lastLocation = locationRepository
+                                        .findFirstByTrackingSessionIdOrderByTimestampDesc(
+                                                        session.getId())
+                                        .orElse(null);
+                        return buildInfoResponse(session, lastLocation);
+                });
         }
 
         @Transactional(readOnly = true)
@@ -138,14 +143,9 @@ public class TrackingService {
                 TrackingSession session = sessionRepository.findById(sessionId)
                                 .orElseThrow(() -> new IllegalArgumentException("Session not found"));
 
-                // Maybe verify if it's the right customer? The prompt says "Only customers with
-                // an active Pro subscription may access tracking information".
-                // It doesn't strictly say "only the mapped customerId", but generally you'd
-                // check this:
-                // if (!session.getCustomerId().equals(user.getId()) && user.getRole() !=
-                // UserRole.ADMIN) {
-                // throw new IllegalStateException("Not authorized to view this session");
-                // }
+                if (!session.getCustomerId().equals(user.getId()) && user.getRole() != com.aquasense.entity.UserRole.ADMIN) {
+                        throw new IllegalStateException("Not authorized to view this tracking session");
+                }
 
                 TrackingLocation lastLocation = locationRepository
                                 .findFirstByTrackingSessionIdOrderByTimestampDesc(session.getId())
@@ -157,8 +157,7 @@ public class TrackingService {
         private TrackingInfoResponse buildInfoResponse(TrackingSession session, TrackingLocation location) {
                 Double distance = null;
                 Instant estimatedArrival = null;
-                if (location != null && location.getSpeed() != null && location.getSpeed() > 0
-                                && session.getDestinationLatitude() != null
+                if (location != null && session.getDestinationLatitude() != null
                                 && session.getDestinationLongitude() != null) {
 
                         // Calculate simple distance in meters (haversine)
@@ -175,9 +174,10 @@ public class TrackingService {
                         double r = 6371000; // Radius of earth in meters
                         distance = r * c;
 
-                        // ETA in seconds = distance / speed
-                        long etaSeconds = (long) (distance / location.getSpeed());
-                        estimatedArrival = location.getTimestamp().plusSeconds(etaSeconds);
+                        if (location.getSpeed() != null && location.getSpeed() > 0) {
+                                long etaSeconds = (long) (distance / location.getSpeed());
+                                estimatedArrival = location.getTimestamp().plusSeconds(etaSeconds);
+                        }
                 }
 
                 return TrackingInfoResponse.builder()

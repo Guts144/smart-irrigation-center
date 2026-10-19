@@ -18,9 +18,9 @@ public class SubscriptionController {
     private final StripeService stripeService;
 
     @PostMapping("/checkout")
-    public Map<String, String> checkout() {
+    public Map<String, String> checkout(@RequestParam(value = "platform", required = false) String platform) {
         var user = proAccessService.currentUser();
-        String url = stripeService.createCheckoutSession(user);
+        String url = stripeService.createCheckoutSession(user, platform);
         return Map.of("checkoutUrl", url);
     }
 

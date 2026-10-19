@@ -19,6 +19,23 @@ public class GlobalExceptionHandler {
         return detail;
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ProblemDetail handleIllegalArgument(IllegalArgumentException ex) {
+        ProblemDetail detail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        detail.setTitle("Not Found");
+        return detail;
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ProblemDetail handleIllegalState(IllegalStateException ex) {
+        HttpStatus status = ex.getMessage() != null && ex.getMessage().contains("Pro subscription required")
+                ? HttpStatus.PAYMENT_REQUIRED
+                : HttpStatus.CONFLICT;
+        ProblemDetail detail = ProblemDetail.forStatusAndDetail(status, ex.getMessage());
+        detail.setTitle(status.getReasonPhrase());
+        return detail;
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidation(MethodArgumentNotValidException ex) {
         String message = ex.getBindingResult().getFieldErrors().stream()

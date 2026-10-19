@@ -33,7 +33,7 @@ aquasense:
     access-token-expiration-ms: 900000
     refresh-token-expiration-ms: 604800000
   cors:
-    allowed-origins: ${CORS_ORIGINS:http://localhost:4200}
+    allowed-origins: ${CORS_ORIGINS:http://localhost:4200,http://localhost:5000}
   mqtt:
     host: ${MQTT_HOST:003405b159a641e2bed741f8db2e0344.s1.eu.hivemq.cloud}
     port: ${MQTT_PORT:8883}

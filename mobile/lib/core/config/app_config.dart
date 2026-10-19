@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 /// Runtime configuration.
 ///
@@ -15,7 +16,13 @@ class AppConfig {
   /// the host machine through 10.0.2.2; the iOS simulator can use localhost.
   static String get apiBaseUrl {
     if (_apiBaseUrlOverride.isNotEmpty) return _apiBaseUrlOverride;
+    if (kIsWeb) return 'http://localhost:8081';
     return Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
+  }
+
+  static String get wsUrl {
+    final base = apiBaseUrl;
+    return '${base.replaceFirst('http', 'ws')}/ws';
   }
 
   static const connectTimeout = Duration(seconds: 15);

@@ -23,6 +23,10 @@ public class ValveController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void sendCommand(@Valid @RequestBody ValveCommandRequest request) {
         var user = proAccessService.requireProUser();
+        if (!mqttBridgeService.isConnected()) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    HttpStatus.SERVICE_UNAVAILABLE, "MQTT broker is disconnected");
+        }
         mqttBridgeService.publishValveCommand(request.action());
         valveCommandRepository.save(ValveCommand.builder()
                 .user(user)

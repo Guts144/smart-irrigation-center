@@ -15,6 +15,7 @@ class AppColors {
   static const secondary = Color(0xFF2196F3);
   static const textMuted = Color(0xFF616161);
   static const border = Color(0xFFE0E0E0);
+  static const surface = Color(0xFFF1F8E9);
 }
 
 class AppTheme {
@@ -66,7 +67,7 @@ class AppTheme {
           textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: Colors.white,
         elevation: 3,
         shape: RoundedRectangleBorder(
